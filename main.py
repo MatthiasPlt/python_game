@@ -1,16 +1,27 @@
-# This is a sample Python script.
+import sys
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+print('bienvenue dans notre jeux')
+print("1 : commencer une nouvelle partie")
+print("2 : charger une partie sauvegardé")
+print("3 : detail d'une partie")
+print("4 : quitter le jeu")
+print('')
 
+choices_player = int(input("Choisissez ce que vous voulez faire: "))
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+while choices_player < 1 or choices_player > 4:
+    print('commande invalide')
+    choices_player =  int(input('faites un autre choix :'))
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharmhg')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if choices_player == 1:
+    print('ok1')
+    ''' fonction de debut de la partie'''
+elif choices_player == 2:
+    print('ok2')
+    ''' relance la partie save'''
+elif choices_player == 3:
+    print('ok3')
+    ''' presentation du jeu'''
+else :
+    print('fermeture du jeu')
+    sys.exit("Message d'arrêt")
