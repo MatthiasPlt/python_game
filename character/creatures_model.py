@@ -33,5 +33,30 @@ class Creature:
         if self.armor > 0:
             ''' j'attends la partie du jouers pour continuer'''
 
+    def hp_creature(self):
+        if self.level == 1:
+            self.health = self.health
+        elif self.level <= 0:
+            print('erreur de la cration de la creature')
+        elif self.level > 15:
+            print('erreur de la cration de la creature')
+        elif 2 <= self.level <= 15:
+            self.health = self.health + self.level * 30
+
+    def attack_creature(self):
+        if self.level == 1:
+            self.attack = self.attack
+        elif 2 <= self.level <= 15:
+            self.attack = self.attack + self.level * 15
+
+    def armor_creature(self):
+        if self.level == 1:
+            self.armor = self.armor
+        elif 2 <= self.level <= 15:
+            self.armor = self.armor + self.level * 10
+
+
+
+
 
 
