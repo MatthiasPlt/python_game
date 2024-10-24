@@ -1,4 +1,6 @@
 import sys
+
+
 def menu():
     print('bienvenue dans notre jeux')
     print("1 : commencer une nouvelle partie")
@@ -11,7 +13,7 @@ def menu():
 
     while choices_player < 1 or choices_player > 4:
         print('commande invalide')
-        choices_player =  int(input('faites un autre choix :'))
+        choices_player = int(input('faites un autre choix :'))
 
     if choices_player == 1:
         print('ok1')
@@ -22,6 +24,6 @@ def menu():
     elif choices_player == 3:
         print('ok3')
         ''' presentation du jeu'''
-    else :
+    else:
         print('fermeture du jeu')
         sys.exit("Message d'arrêt")
