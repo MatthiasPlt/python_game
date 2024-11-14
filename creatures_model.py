@@ -1,4 +1,4 @@
-import equipement.weapons
+import weapons
 class Creature:
     def __init__(self, races, health, attack, armor, level, xp):
         self.races = races
@@ -20,7 +20,7 @@ class Creature:
 
     def damage_creature(self, Weapons):
         if self.armor > 0:
-            equipement.weapons.Weapons.get_dps(12) %= 2
+            weapons.Weapons.get_dps(12) %= 2
 
     def caracteristique_creature(self):
         if self.level == 1:
