@@ -1,16 +1,14 @@
 
 class Player:
-    def __init__(self, name, attaque=10, defense=5, hp=100, level=1, objects=None):
-        if objects is None:
-            objects = []
+    def __init__(self, name, attack=10, defense=5, hp=100, level=1):
         self.name = name
-        self.attaque = attaque
+        self.attack_value = attack
         self.defense = defense
         self.hp = hp
         self.max_hp = hp  # Point de vie maximum
         self.level = level
         self.experience = 0  # Expérience initiale
-        self.objects = objects
+        self.inventory = []  # Liste d'objets que le joueur possède
     
     def attack(self, target):
         """Effectue une attaque sur un autre joueur ou monstre."""

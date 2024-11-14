@@ -1,73 +1,83 @@
-import weapons
+# creatures.py
+
 class Creature:
-    def __init__(self, races, health, attack, armor, level, xp):
-        self.races = races
-        self.level = level
-        self.health = health
-        self.attack = attack
-        self.armor = armor
-        self.xp = xp
+    def __init__(self, name, races, health, armor, attack, defense, level, xp):
+        self.name = name  # Nom de la créature
+        self.races = races  # Type ou race de la créature (ex: gobelin, squelette, etc.)
+        self.level = level  # Niveau de la créature
+        self.defense = defense # Niveau de la créature en defense
+        self.health = health  # Points de vie
+        self.armor= armor # Armure
+        self.attack = attack  # Attaque
+        self.xp = xp  # Points d'expérience à obtenir après sa défaite
 
     def creature_appearing(self):
-        print("Un", self.races, "de niveau", self.level, "apparait avec", self.health, "PV")
+        """Affiche quand une créature apparaît"""
+        print(f"Un {self.name} ({self.races}) de niveau {self.level} apparaît avec {self.health} PV.")
 
     def death_creature(self):
-        print("vous avez vaincu un", self.races, "de niveau", self.level, "vous avez donc gagner",
-              self.xp, "points d'experiences")
-        '''players.xp += self.xp
-        print("vous etes level ", level.players, "il vous manque donc ", xp_manquant, " points d'experiences avant le niveau sup")
-        entre guillemets car players pas fait'''
+        """Affiche le message de victoire après avoir tué la créature"""
+        print(f"Vous avez vaincu un {self.name} de niveau {self.level}. Vous gagnez {self.xp} points d'expérience.")
 
-    def damage_creature(self, Weapons):
-        if self.armor > 0:
-            weapons.Weapons.get_dps(12) %= 2
+    def damage_creature(self, damage):
+        """Applique des dégâts à la créature, en prenant en compte son armure"""
+        # Calcul de la réduction des dégâts par l'armure
+        reduced_damage = max(0, damage - self.armor)
+        self.health -= reduced_damage
+        print(f"{self.name} subit {reduced_damage} points de dégâts. Il lui reste {self.health} PV.")
+        
+        if self.health <= 0:
+            self.death_creature()
 
-    def caracteristique_creature(self):
+    def attack(self, player):
+        # Cette méthode calcule l'attaque de la créature
+        damage = self.attack_value - player.armor  # Calcul des dégâts en fonction de l'armure du joueur
+        if damage > 0:
+            player.health -= damage
+            print(f"{self.races} attaque {player.name} et inflige {damage} points de dégâts.")
+        else:
+            print(f"{self.races} attaque {player.name}, mais l'armure bloque tous les dégâts.")
+
+    def death_creature(self):
+        print(f"Vous avez vaincu un {self.races} de niveau {self.level} et gagnez {self.xp} XP.")
+
+
+    def update_stats(self):
+        """Mise à jour des caractéristiques d'une créature selon son niveau"""
         if self.level == 1:
-            self.health = self.health
-            self.attack = self.attack
-            self.armor = self.armor
-        elif self.level <= 0 or self.level > 10:
-            print('erreur de la cration de la creature')
-        elif 2 <= self.level <= 10:
-            self.health = self.health + self.level * 30
-            self.attack = self.attack + self.level * 15
-            self.armor = self.armor + self.level * 10
-
+            pass  # Pas de changement pour le niveau 1
+        elif self.level > 1 and self.level <= 10:
+            self.health += self.level * 30
+            self.attack += self.level * 15
+            self.armor += self.level * 10
+        else:
+            print("Erreur : Niveau de la créature invalide.")
 
 class Boss(Creature):
-    def __init__(self, races, health, attack, armor, numberLife, xp):
-        super().__init__(races, health, attack, armor, numberLife, xp)
-        self.numberLife = 3
+    def __init__(self, name, races, health, attack, armor, level, xp, number_lives=3):
+        super().__init__(name, races, health, attack, armor, level, xp)
+        self.number_lives = number_lives  # Nombre de vies restantes
 
     def perte_life(self):
+        """Gère la perte de vie du boss et la transition entre les phases"""
         if self.health <= 0:
-            self.numberLife -= 1
-            if self.numberLife == 0:
-                print("vous avez vainque le dragon !!!")
-            elif self.numberLife == 2:
-                print("vous etes dans la phase 2, le dragon s'enerve et se renforce")
-                print("il gagne 300 points de vie et 50 d'attaque en plus")
-            elif self.numberLife == 1:
-                print("vous etes dans la derniere phase, le dragon est furieux")
-                print("il gagne 300 points d'armure")
+            self.number_lives -= 1
+            print(f"Le {self.name} a perdu une vie.")
+            if self.number_lives == 0:
+                print(f"Vous avez vaincu {self.name} !")
+            elif self.number_lives == 2:
+                print(f"Le {self.name} entre dans la phase 2. Il devient plus puissant.")
+                self.health += 300
+                self.attack += 50
+            elif self.number_lives == 1:
+                print(f"Le {self.name} entre dans la phase finale, il est plus dangereux !")
+                self.armor += 300
 
-    def boss(self):
-        if self.numberLife == 3:
-            self.health = self.health
-            self.armor = self.armor
-            self.attack = self.attack
-        elif self.numberLife == 2:
-            self.health += 300
-            self.attack += 50
-        elif self.numberLife == 1:
-            self.armor += 300
-
-
-'''
-Creature("squelette", 150, 25, 50, 1, 10)
-Creature("sorcier", 200, 30, 15, 1, 25)
-Creature("invocateur", 250, 50, 0, 1, 50)
-Creature("golem", 300, 15, 200, 1, 100)
-Boss("Dragon", 700, 150, 0, 3, 5000)
-'''
+    def damage_creature(self, damage):
+        """Applique des dégâts à un boss, en prenant en compte ses vies restantes"""
+        reduced_damage = max(0, damage - self.armor)
+        self.health -= reduced_damage
+        print(f"{self.name} (Boss) subit {reduced_damage} points de dégâts. Il lui reste {self.health} PV.")
+        
+        if self.health <= 0:
+            self.perte_life()
