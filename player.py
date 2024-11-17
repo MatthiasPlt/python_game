@@ -1,14 +1,22 @@
+from location import Location
+
 
 class Player:
-    def __init__(self, name, attack=10, defense=5, hp=100, level=1):
+    def __init__(self, name, location, health=50, attack=10, defense=5, hp=100, level=1):
         self.name = name
+        self.health = health
         self.attack_value = attack
         self.defense = defense
         self.hp = hp
         self.max_hp = hp  # Point de vie maximum
         self.level = level
         self.experience = 0  # Expérience initiale
-        self.inventory = []  # Liste d'objets que le joueur possède
+        self.inventory = []
+        self.location = location
+
+    def is_alive(self):
+        """Retourne True si le joueur est encore en vie, False sinon."""
+        return self.hp > 0    
     
     def attack(self, target):
         """Effectue une attaque sur un autre joueur ou monstre."""
